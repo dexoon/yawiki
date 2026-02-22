@@ -199,9 +199,10 @@ class YandexWikiClient:
         Returns:
             True if deleted successfully
         """
-        slug = self._make_slug(page_path)
-        params = {"slug": slug}
-        self._request("DELETE", "/pages", params=params)
+        # First get the page ID using slug
+        page = self.read(page_path, include_content=False)
+        # Then delete by ID
+        self._request("DELETE", f"/pages/{page.id}")
         return True
 
     # ==================== Convenience Methods ====================
